@@ -1,0 +1,45 @@
+<div class="header bg-gradient-eco pb-8 pt-md-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="mb-4">
+        <ng-container *ngIf="!loading && !errorMsg; else loadingOrError">
+          <app-stats-pie-card [data]="stats"></app-stats-pie-card>
+        </ng-container>
+
+        <ng-template #loadingOrError>
+          <div class="card card-stats">
+            <div class="card-body">
+              <ng-container *ngIf="loading">
+                <span class="text-muted">Carregando estatísticas...</span>
+              </ng-container>
+              <ng-container *ngIf="!loading && errorMsg">
+                <span class="text-danger">{{ errorMsg }}</span>
+              </ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="container-fluid px-0">
+      <app-urban-degradation-map
+        [title]="'Mapa de sustentabilidade urbana'"
+        [center]="[-8.762, -63.9039]"
+        (addNew)="onAddNewPoint()"
+      >
+        [zoom]="13">
+      </app-urban-degradation-map>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay do popup -->
+<div class="zip-overlay" *ngIf="showZip" (click)="closeZip()">
+  <div class="zip-dialog" (click)="$event.stopPropagation()">
+    <button class="zip-close" (click)="closeZip()">✕</button>
+    <app-zip-uploader></app-zip-uploader>
+  </div>
+</div>
